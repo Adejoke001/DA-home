@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
@@ -25,6 +24,7 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             color: var(--light);
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
         .navbar-blur {
@@ -95,11 +95,9 @@
             gap: 5px;
         }
 
-        .branded {
+        .branded{
             font-family: 'Pacifico', cursive;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+              background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
         
         .reaction-btn {
@@ -132,21 +130,20 @@
             font-size: 0.7rem;
         }
         
-        /* Hero section with horizontal sliding */
+        /* Hero section with 8 images per slide */
         .hero-swiper {
             width: 100%;
-            height: auto;
+            height: 180px;
             border-radius: 1rem;
             overflow: hidden;
-            position: relative;
-            padding-bottom: 50px; /* Space for pagination */
+            margin-bottom: 40px; /* Space for pagination */
         }
         
         .hero-slide {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
             gap: 8px;
-            padding: 10px;
-            justify-content: center;
+            padding: 0 10px;
         }
         
         .hero-image {
@@ -155,52 +152,43 @@
             object-fit: cover;
             border-radius: 8px;
             transition: transform 0.3s ease;
-            flex-shrink: 0;
         }
         
         .hero-image:hover {
             transform: scale(1.05);
         }
         
-        /* Swiper navigation and pagination styling */
         .swiper-button-next, .swiper-button-prev {
             color: var(--primary);
             background: rgba(0, 0, 0, 0.5);
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
+            z-index: 10;
         }
         
         .swiper-button-next:after, .swiper-button-prev:after {
             font-size: 1.2rem;
         }
         
-        /* Fixed pagination positioning */
+        /* Pagination styling */
         .swiper-pagination {
-            position: absolute;
-            bottom: 10px !important;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
+            position: relative !important;
+            bottom: 0 !important;
+            margin-top: 20px;
+            height: 20px;
         }
         
         .swiper-pagination-bullet {
-            width: 12px;
-            height: 12px;
-            background-color: rgba(255, 255, 255, 0.5);
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
             opacity: 1;
-            margin: 0 5px;
         }
         
         .swiper-pagination-bullet-active {
             background: var(--primary);
-            width: 14px;
-            height: 14px;
+            transform: scale(1.2);
         }
         
         .menu {
@@ -249,33 +237,104 @@
             cursor: pointer;
         }
         
-        /* Fixed navbar toggler styling */
+        /* Mobile menu toggler styling */
         .header-bar {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
             width: 30px;
-            height: 30px;
+            height: 21px;
             cursor: pointer;
-            position: relative;
+            padding: 5px;
             z-index: 999;
+            position: relative;
         }
         
         .header-bar span {
             display: block;
-            width: 25px;
+            width: 100%;
             height: 3px;
             background-color: white;
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 2px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
         }
         
-        /* Hide navigation buttons on mobile */
+        .header-bar.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .header-bar.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .header-bar.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        /* Responsive hero slider */
+        @media (max-width: 1024px) {
+            .hero-slide {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero-swiper {
+                height: 340px;
+            }
+        }
+        
+        /* Tablet view - 4 images per row */
         @media (max-width: 768px) {
+            .hero-slide {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero-swiper {
+                height: 180px;
+            }
+        }
+        
+        /* Mobile view - 3 images per row, horizontal slider */
+        @media (max-width: 640px) {
+            .hero-slide {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+                padding: 0 5px;
+            }
+            
+            .hero-swiper {
+                height: 140px;
+                padding-bottom: 40px; /* Extra space for pagination */
+            }
+            
+            .hero-image {
+                height: 120px;
+            }
+            
             .swiper-button-next, .swiper-button-prev {
-                display: none;
+                display: none; /* Hide arrows on mobile for better touch experience */
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .hero-slide {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            
+            .hero-swiper {
+                height: 130px;
+            }
+            
+            .hero-image {
+                height: 110px;
+            }
+        }
+        
+        /* Fix mobile menu button positioning */
+        @media (max-width: 1024px) {
+            .header-bar {
+                display: flex !important;
             }
         }
     </style>
@@ -293,10 +352,11 @@
                     <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center mr-3 shadow-lg">
                         <i class="fas fa-heart text-white"></i>
                     </div>
-                    <span class="text-xl font-bold text-white">Lovers' <span class="branded">Vow</span></span>
+                   <span class="text-xl font-bold text-white">Lovers'<span
+                            class="text-transparent bg-clip-text branded">Vow</span></span>
                 </div>
 
-                <!-- Desktop Menu -->
+                <!-- Desktop Menu-->
                 <ul class="hidden lg:flex items-center space-x-8">
                     <li>
                         <a href="home.html" class="text-white font-medium relative group">
@@ -343,8 +403,8 @@
                     <a href="login.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium">Log Out</a>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="header-bar lg:hidden">
+                <!-- Mobile Menu Button - Fixed positioning -->
+                <div class="header-bar lg:hidden relative z-50">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -385,54 +445,56 @@
         </li>
     </ul>
 
-    <!-- Hero Section with Sliding Image Grid -->
+    <!-- Hero Section with Sliding Grid -->
     <section class="pt-32 pb-16">
         <div class="container mx-auto px-4">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4">Find Your Perfect <span class="section-title">Match</span></h1>
-            <p class="text-gray-300 text-center mb-8 max-w-2xl mx-auto text-sm md:text-base">Connect with amazing people who share your interests and values</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-white text-center mb-4">Find Your Perfect <span class="section-title">Match</span></h1>
+            <p class="text-gray-300 text-center mb-8 max-w-2xl mx-auto">Connect with amazing people who share your interests and values</p>
             
             <!-- Slider main container -->
             <div class="hero-swiper">
                 <!-- Additional required wrapper -->
                 <div class="swiper-wrapper">
-                    <!-- Slide 1 -->
+                    <!-- Slide 1 - 3 images for mobile, 8 for desktop -->
                     <div class="swiper-slide">
                         <div class="hero-slide">
                             <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 1" class="hero-image">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 2" class="hero-image">
                             <img src="https://plus.unsplash.com/premium_photo-1672239496290-5061cfee7ebb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG1hbnxlbnwwfHwwfHx8MA%3D%3D" alt="User 3" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 4" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 5" class="hero-image">
+                            <!-- Desktop only images -->
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 4" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 5" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 6" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 7" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 8" class="hero-image hidden md:block">
                         </div>
                     </div>
                     <!-- Slide 2 -->
                     <div class="swiper-slide">
                         <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 6" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 7" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 8" class="hero-image">
                             <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 9" class="hero-image">
                             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 10" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 11" class="hero-image">
+                            <!-- Desktop only images -->
+                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 12" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 13" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 14" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 15" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 16" class="hero-image hidden md:block">
                         </div>
                     </div>
                     <!-- Slide 3 -->
                     <div class="swiper-slide">
                         <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 11" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 12" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 13" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 14" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 15" class="hero-image">
-                        </div>
-                    </div>
-                    <!-- Slide 4 -->
-                    <div class="swiper-slide">
-                        <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 16" class="hero-image">
                             <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 17" class="hero-image">
                             <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 18" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 19" class="hero-image">
-                            <img src="https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbnxlbnwwfHwwfHx8MA%3D%3D" alt="User 20" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbnxlbnwwfHwwfHx8MA%3D%3D" alt="User 19" class="hero-image">
+                            <!-- Desktop only images -->
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 20" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 21" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 22" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 23" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 24" class="hero-image hidden md:block">
                         </div>
                     </div>
                 </div>
@@ -449,7 +511,7 @@
     <!-- Profiles Section -->
     <section class="py-16">
         <div class="container mx-auto px-4">
-            <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-12">Featured <span class="section-title">Profiles</span></h2>
+            <h2 class="text-3xl font-bold text-white text-center mb-12">Featured <span class="section-title">Profiles</span></h2>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Profile 1 -->
@@ -622,8 +684,8 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Profile 5 -->
+
+                 <!-- Profile 5 -->
                 <div class="profile-card card-dark">
                     <div class="relative">
                         <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
@@ -964,8 +1026,10 @@
                 </div>
             </div>
             
+            </div>
+            
             <div class="text-center mt-12">
-                <button class="bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-amber-600 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl text-sm md:text-base">
+                <button class="bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-amber-600 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl">
                     Load More Profiles
                 </button>
             </div>
@@ -1092,70 +1156,65 @@
         $(document).ready(function () {
             // Mobile Menu
             $('.header-bar').click(function () {
+                $(this).toggleClass('active');
                 $('.menu, .overlay').toggleClass('active');
             });
 
             $('.overlay').click(function () {
+                $('.header-bar').removeClass('active');
                 $('.menu, .overlay').removeClass('active');
             });
 
             $('.mobile-menu-close').click(function () {
+                $('.header-bar').removeClass('active');
                 $('.menu, .overlay').removeClass('active');
             });
 
             // Close mobile menu when a link is clicked
             $('.menu a').click(function() {
+                $('.header-bar').removeClass('active');
                 $('.menu, .overlay').removeClass('active');
             });
 
-            // Initialize Hero Swiper
+            // Initialize Hero Swiper with responsive settings
             const heroSwiper = new Swiper('.hero-swiper', {
                 loop: true,
                 autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
+                    delay: 4000,
                 },
+                slidesPerView: 1,
+                spaceBetween: 10,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
+                    dynamicBullets: true,
                 },
                 navigation: {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 },
+                // Touch gestures for better mobile experience
+                touchRatio: 1,
+                simulateTouch: true,
+                grabCursor: true,
+                resistanceRatio: 0.5,
+                // Responsive breakpoints
                 breakpoints: {
-                    // Extra small screens (phones): 2 images
-                    320: {
-                        slidesPerView: 2,
-                        spaceBetween: 8
-                    },
-                    // Small screens: 2-3 images
-                    480: {
-                        slidesPerView: 2,
-                        spaceBetween: 8
-                    },
+                    // When window width is >= 640px
                     640: {
-                        slidesPerView: 3,
-                        spaceBetween: 8
+                        slidesPerView: 1,
+                        spaceBetween: 10,
                     },
-                    // Medium screens (tablets): 4-5 images
+                    // When window width is >= 768px
                     768: {
-                        slidesPerView: 4,
-                        spaceBetween: 8
+                        slidesPerView: 1,
+                        spaceBetween: 10,
                     },
+                    // When window width is >= 1024px
                     1024: {
-                        slidesPerView: 5,
-                        spaceBetween: 8
+                        slidesPerView: 1,
+                        spaceBetween: 10,
                     },
-                    // Large screens: 6-8 images
-                    1280: {
-                        slidesPerView: 6,
-                        spaceBetween: 8
-                    },
-                    1536: {
-                        slidesPerView: 8,
-                        spaceBetween: 8
-                    }
                 }
             });
 
@@ -1176,6 +1235,16 @@
                     }, 300);
                 }
             });
+            
+            // Ensure slider is touch-friendly on mobile
+            if ('ontouchstart' in window) {
+                $('.hero-swiper').css('cursor', 'grab');
+                
+                // Prevent default touch actions that might interfere
+                $('.hero-swiper').on('touchmove', function(e) {
+                    e.preventDefault();
+                }, { passive: false });
+            }
         });
     </script>
 </body>
